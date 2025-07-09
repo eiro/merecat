@@ -29,6 +29,7 @@
 #include <config.h>
 
 #include <stddef.h>
+#include <sys/syslog.h>
 #include <sys/types.h>
 #include <sys/param.h>
 #include <sys/stat.h>
@@ -4796,8 +4797,14 @@ sneaky:
 
 	/* Is it world-executable and in the CGI area? */
 	if (is_cgi(hc)) {
-		if (hc->sb.st_mode & S_IXOTH && hc->hs->cgi_enabled)
-			return cgi(hc);
+		if (hc->hs->cgi_enabled) {
+			if (hc->sb.st_mode & S_IXOTH) return cgi(hc);
+			syslog(
+				LOG_INFO ,
+				"%.80s URL \"%s\" has no execution right for others (chmod o+rx can fix it)",
+				httpd_client(hc),
+				hc->encodedurl );
+		}
 
 		if (is_php(hc, NULL) || is_ssi(hc, NULL))
 			return cgi(hc);
