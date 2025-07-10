@@ -34,9 +34,14 @@ AC_CHECK_LIB(rt, clock_gettime)
 AC_CHECK_LIB(resolv, hstrerror)
 
 # Checks for header files.
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h grp.h memory.h netdb.h netinet/in.h osreldate.h paths.h poll.h stddef.h stdlib.h string.h termios.h sys/devpoll.h sys/event.h sys/param.h sys/poll.h sys/socket.h sys/time.h syslog.h unistd.h])
+AC_CHECK_HEADERS([
+  sys/time.h     sys/time.h     sys/socket.h   sys/poll.h
+  sys/param.h    sys/event.h    sys/devpoll.h  netinet/in.h
+  arpa/inet.h    unistd.h       termios.h      syslog.h
+  string.h       stdlib.h       stddef.h       poll.h
+  paths.h        osreldate.h    netdb.h        memory.h
+  grp.h          fcntl.h ])
 AC_CHECK_HEADER_STDBOOL
-AC_HEADER_TIME
 AC_HEADER_DIRENT
 
 AC_C_INLINE
